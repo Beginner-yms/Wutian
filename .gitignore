@@ -18,7 +18,8 @@ target/
 .project
 .settings
 .springBeans
-
+.docx
+/doc
 ### IntelliJ IDEA ###
 .idea
 *.iws
