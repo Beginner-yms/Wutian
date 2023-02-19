@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.HealthReportMapper">
+    <resultMap type="HealthReport" id="HealthReport">
+        <id property="reportId" column="report_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="xunma" column="jiankang_xunma"/>
+        <result property="shuidou" column="jiankang_shudou"/>
+        <result property="yigang" column="jiankang_yigang"/>
+        <result property="other" column="jiankang_other"/>
+        <result property="aids" column="jiankang_aids"/>
+        <result property="xinguang" column="jiankang_xinguang"/>
+        <result property="createTime" column="create_time"/>
+        <result property="userWxId" column="user_wxid"/>
+        <result property="phone" column="phone"/>
+    </resultMap>
+
+    <select id="selectAllHealthReport" resultMap="HealthReport">
+        select *
+        from health_report
+        order by report_id desc
+    </select>
+
+    <insert id="insertHealthReport" parameterType="HealthReport">
+        INSERT INTO smart_health.health_report (user_name, jiankang_xunma, jiankang_shudou,jiankang_yigang, jiankang_other,
+                                                jiankang_aids, jiankang_xinguang, create_time, user_wxid,phone)
+        VALUES (#{userName}, #{xunma}, #{shuidou},  #{yigang}, #{other}, #{aids},
+                #{xinguang},
+                sysdate(), #{userWxId},#{phone})
+    </insert>
+<!--    条件查询-->
+    <select id="searchHealthReport" resultMap="HealthReport" parameterType="com.ruoyi.system.domain.SearchHealthReport">
+        SELECT * FROM  health_report
+        WHERE 1=1
+        <if test="userName != null">
+            AND user_name like concat("%",#{userName},"%")
+        </if>
+        <if test="exception != null" >
+            AND (jiankang_xunma = 1 or jiankang_shudou =1 or jiankang_yigang=1 or jiankang_other=1 or jiankang_aids=1 )
+        </if>
+        order by  report_id desc
+
+    </select>
+</mapper>
